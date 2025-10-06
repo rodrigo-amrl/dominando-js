@@ -1,0 +1,7 @@
+{
+  "name": "dominando-js",
+  "packageManager": "yarn@4.10.3",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
