@@ -45,3 +45,4 @@ class CustomerController {
         return res.status(204).send();
     }
 }
+export default new CustomerController();

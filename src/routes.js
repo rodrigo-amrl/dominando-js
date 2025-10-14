@@ -1,6 +1,7 @@
-const { Router } = require('express');
+import { Router } from 'express';
+import customers from './app/controllers/CustomerController';
+
 const routes = Router();
-const customers = require('./controllers/CustomerController');
 
 routes.get("/customers", customers.index);
 routes.get("/customers/:id", customers.show);
@@ -12,4 +13,4 @@ routes.get("/", (req, res) => {
     return res.json({ message: "API is running" });
 });
 
-module.exports = routes;
+export default routes;
