@@ -1,25 +1,12 @@
-class CustomerController {
-    constructor() {
-        this.customers = [{
-            id: 1,
-            name: 'Rodrigo',
-            age: 24,
-            site: "www.rodrigo.com"
-        },
-        {
-            id: 2,
-            name: 'Maria',
-            age: 30,
-            site: "www.maria.com"
-        }]
-    }
+import Customer from "../models/Customer";
 
-    index(req, res) {
-        return res.json(customers);
+class CustomerController {
+    async index(req, res) {
+        return res.json(await Customer.findAll());
     }
     show(req, res) {
         const id = parseInt(req.params.id);
-        const customer = customers.find(c => c.id === id);
+        const customer = Customer.findOne(id);
         const status = customer ? 200 : 404;
         return res.status(status).json(customer);
     }
