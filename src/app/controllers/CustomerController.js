@@ -2,33 +2,62 @@ import Customer from "../models/Customer";
 
 class CustomerController {
     async index(req, res) {
+        const { name, email, status, createdBefore, createdAfter, UpdatedBefore, UpdatedAfter, Sort } = req.query;
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 20;
+        const offset = (page - 1) * limit;
+
         return res.json(await Customer.findAll());
     }
-    show(req, res) {
+    async show(req, res) {
         const id = parseInt(req.params.id);
-        const customer = Customer.findOne(id);
+        const customer = await Customer.findByPk(id);
         const status = customer ? 200 : 404;
         return res.status(status).json(customer);
     }
-    create(req, res) {
-        const { name, age, site } = req.body;
+    async create(req, res) {
 
-        const nextId = customers.length ? Math.max(...customers.map(c => c.id)) + 1 : 1;
-        const newCustomer = { id: nextId, name, age, site };
-        customers.push(newCustomer);
+        const schema = Yup.object().shape({
+            name: Yup.string().required(),
+            email: Yup.string().email().required(),
+            status: Yup.string().oneOf(['active', 'inactive']).required(),
+            site: Yup.string().url()
+        })
+        if (!(await schema.isValid(req.body))) {
+            return res.status(400).json({ error: 'Validation fails' });
+        }
+
+        const newCustomer = await Customer.create(req.body);
+
         return res.status(201).json(newCustomer);
     }
-    update(req, res) {
+    async update(req, res) {
         const id = parseInt(req.params.id);
-        const { name, age, site } = req.body;
-        const customerIndex = customers.findIndex(c => c.id === id);
-        customers[customerIndex] = { id, name, age, site };
-        return res.json(customers[customerIndex]);
+
+        const schema = Yup.object().shape({
+            name: Yup.string(),
+            email: Yup.string().email(),
+            status: Yup.string().oneOf(['active', 'inactive']),
+            site: Yup.string().url()
+        });
+        if (!(await schema.isValid(req.body))) {
+            return res.status(400).json({ error: 'Validation fails' });
+        }
+        const customer = await Customer.findByPk(id);
+        if (!customer) {
+            return res.status(404).json({ error: 'Customer not found' });
+        }
+        const updatedCustomer = await customer.update(req.body);
+        return res.json(updatedCustomer);
     }
-    delete(req, res) {
+    async delete(req, res) {
         const id = parseInt(req.params.id);
-        const customerIndex = customers.findIndex(c => c.id === id);
-        delete customers[customerIndex];
+
+        const customer = await Customer.findByPk(id);
+        if (!customer) {
+            return res.status(404).json({ error: 'Customer not found' });
+        }
+        await customer.destroy();
         return res.status(204).send();
     }
 }
