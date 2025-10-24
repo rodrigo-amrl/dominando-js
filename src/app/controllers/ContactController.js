@@ -1,6 +1,6 @@
 import Contact from "../models/Contact.js";
 import * as Yup from "yup";
-import { validateYup } from "../helpers/validate.js";
+import { validateYup } from "../../helpers/validate.js";
 
 class ContactController {
   // Listagem de contatos de um cliente
@@ -36,9 +36,7 @@ class ContactController {
     try {
       const { customerId, id } = req.params;
 
-      const contact = await Contact.findOne({
-        where: { id, customer_id: customerId },
-      });
+      const contact = await Contact.findOne({ where: { id, customer_id: customerId } });
 
       if (!contact) return res.status(404).json({ error: "Contact not found" });
       return res.json(contact);

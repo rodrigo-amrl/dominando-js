@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import customers from './app/controllers/CustomerController.js';
-// import contacts from './app/controllers/ContactController';
+import contacts from './app/controllers/ContactController.js';
 const routes = Router();
 
 // Customer routes
