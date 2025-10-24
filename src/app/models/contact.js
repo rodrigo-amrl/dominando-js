@@ -1,17 +1,31 @@
-import { Sequelize, Model } from "sequelize";
+import { Model, DataTypes } from 'sequelize';
 
 class Contact extends Model {
     static init(sequelize) {
-        super.init(
+        return super.init(
             {
-                name: Sequelize.STRING,
-                email: {
-                    type: Sequelize.STRING
+                name: {
+                    type: DataTypes.STRING,
+                    allowNull: false,
                 },
-            }, { sequelize }
+                email: {
+                    type: DataTypes.STRING,
+                    allowNull: true,
+                    validate: {
+                        isEmail: true,
+                    },
+                },
+            },
+            {
+                sequelize,
+                tableName: 'contacts',
+            }
         );
     }
-    static assossiete(models) {
-        this.hasMany(models.Customer, { foreignKey: 'customer_id', as: 'customer' });
+
+    static associate(models) {
+        this.belongsTo(models.Customer, { foreignKey: 'customer_id' });
     }
 }
+
+export default Contact;

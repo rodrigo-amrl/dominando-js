@@ -1,15 +1,31 @@
-import { Model, Sequelize } from "sequelize";
+import { Model, DataTypes } from 'sequelize';
 
 class Customer extends Model {
     static init(sequelize) {
-        super.init(
+        return super.init(
             {
-                name: Sequelize.STRING,
-                email: Sequelize.STRING,
-                status: Sequelize.ENUM('active', 'inactive')
-            }, { sequelize }
+                name: {
+                    type: DataTypes.STRING,
+                    allowNull: false,
+                },
+                email: {
+                    type: DataTypes.STRING,
+                    allowNull: false,
+                    unique: true,
+                    validate: {
+                        isEmail: true,
+                    },
+                },
+                status: {
+                    type: DataTypes.ENUM('active', 'inactive'),
+                    defaultValue: 'active',
+                },
+            },
+            {
+                sequelize,
+                tableName: 'customers',
+            }
         );
-
     }
 }
 
