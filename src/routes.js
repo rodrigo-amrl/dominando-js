@@ -3,8 +3,11 @@ import customers from './app/controllers/CustomerController.js';
 import contacts from './app/controllers/ContactController.js';
 import users from './app/controllers/UserController.js';
 import SessionController from './app/controllers/SessionController.js';
+import auth from './app/middlewares/auth.js';
+
 const routes = Router();
 
+routes.use(auth);
 routes.post('/sessions', SessionController.create);
 
 // Customer routes

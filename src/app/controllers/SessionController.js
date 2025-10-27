@@ -1,5 +1,7 @@
-import User from "../models/user";
+import User from "../models/user.js";
 import jwt from "jsonwebtoken";
+import loadEnvFile from 'process';
+loadEnvFile('.env')
 
 class SessionController {
 
@@ -16,7 +18,7 @@ class SessionController {
         }
 
         return res.json({
-            user: { id: user.id, name: user.name, email: user.email }, token: jwt.sign({ id: user.id }, "secret", { expiresIn: '7d' })
+            user: { id: user.id, name: user.name, email: user.email }, token: jwt.sign({ id: user.id }, process.env.SECRET_KEY, { expiresIn: '7d' })
         });
     }
 }
