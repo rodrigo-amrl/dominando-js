@@ -1,0 +1,11 @@
+NODE_ENV= development
+SERVER_PORT= 
+SECRET_KEY= 
+SENTRY_DSN=
+
+
+DB_DIALECT= mysql
+DB_HOST= localhost
+DB_USER= root
+DB_PASS= 
+DB_NAME= 

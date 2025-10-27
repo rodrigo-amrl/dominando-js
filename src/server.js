@@ -1,5 +1,6 @@
 import { loadEnvFile } from 'node:process'
 loadEnvFile('.env');
+
 import app from './app.js';
 
 app.listen(process.env.SERVER_PORT || 3000, () => {
