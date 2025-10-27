@@ -2,8 +2,10 @@ import { Router } from 'express';
 import customers from './app/controllers/CustomerController.js';
 import contacts from './app/controllers/ContactController.js';
 import users from './app/controllers/UserController.js';
-
+import SessionController from './app/controllers/SessionController.js';
 const routes = Router();
+
+routes.post('/sessions', SessionController.create);
 
 // Customer routes
 routes.get("/customers", customers.index);
